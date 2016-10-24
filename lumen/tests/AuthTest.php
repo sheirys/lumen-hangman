@@ -67,13 +67,19 @@ class AuthTest extends TestCase
 
     public function testAuthRegisterNewUser()
     {
+        $credentials = [
+            'email' => 'newTestUser@xxx.com',
+            'pass' => 'pass',
+        ];
 
-        $this->json('POST', '/auth/register', $this->t_user)
+        $this->json('POST', '/auth/register', $credentials)
         ->seeStatusCode(200)
         ->seeJson([
             'error' => false,
             'success' => true,
         ]);
+
+        $this->seeInDatabase('auth', ['email' => $credentials['email']]);
     }
 
     // how registration will behave when password hasnt been submited
