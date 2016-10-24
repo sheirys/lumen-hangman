@@ -12,3 +12,10 @@
 */
 
 $app->post('/auth/login', 'AuthController@postLogin');
+$app->post('/auth/register', 'AuthController@postRegister');
+
+$app->get('/game/sessions', 'GameController@getSessionList');
+$app->put('/game/sessions', 'GameController@putSessionNew');
+
+$app->get('/game/sessions/{id}', 'GameController@getSessionState');
+$app->post('/game/session/{id}', 'GameController@postSessionGuess');
