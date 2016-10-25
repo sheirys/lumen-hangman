@@ -65,6 +65,7 @@ class AuthTest extends TestCase
         ]);
     }
 
+    // create new user and returns jwt
     public function testAuthRegisterNewUser()
     {
         $credentials = [
@@ -73,9 +74,10 @@ class AuthTest extends TestCase
         ];
 
         $this->json('POST', '/auth/register', $credentials)
-        ->seeStatusCode(Response::HTTP_OK)
+        ->seeStatusCode(Response::HTTP_CREATED)
         ->seeJson([
             'error' => 0,
+            'jwt' => Jwt::createToken($credentials['email']),
         ]);
 
         $this->seeInDatabase('auth', ['email' => $credentials['email']]);
@@ -89,7 +91,7 @@ class AuthTest extends TestCase
         ];
 
         $this->json('POST', '/auth/register', $credentials)
-        ->seeStatusCode(Response::HTTP_NOT_FOUND)
+        ->seeStatusCode(Response::HTTP_BAD_REQUEST)
         ->seeJson([
             'error' => 1,
         ]);
@@ -103,10 +105,26 @@ class AuthTest extends TestCase
         ];
 
         $this->json('POST', '/auth/register', $credentials)
-        ->seeStatusCode(Response::HTTP_NOT_FOUND)
+        ->seeStatusCode(Response::HTTP_BAD_REQUEST)
         ->seeJson([
             'error' => 1,
         ]);
+    }
+
+    // how registration wil lbehave when creating already existing user
+    public function testAuthRegisterUserOverwrite()
+    {
+        $credentials = [
+            'email' => 'test@test.com',
+            'pass' => 'pass',
+        ];
+
+        $this->json('POST', '/auth/register', $credentials)
+        ->seeStatusCode(Response::HTTP_RESERVED)
+        ->seeJson([
+            'error' => 1,
+        ]);
+
     }
 
 }

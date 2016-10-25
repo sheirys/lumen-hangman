@@ -41,4 +41,47 @@ class AuthController extends Controller
 
     }
 
+    public function postRegister(Request $request) {
+
+        $email = $request->input("email");
+        $pass = $request->input("pass");
+
+        if(empty($email) || empty($pass)) {
+            return response()->json(
+                [
+                    'error' => 1,
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        $auth = Auth::where('email', '=', $email)
+            ->first();
+
+        if(!empty($auth)) {
+
+            return response()->json(
+                [
+                    'error' => 1
+                ],
+                Response::HTTP_RESERVED
+            );
+
+        }
+
+        $auth = new Auth;
+        $auth->email = $email;
+        $auth->password = md5($pass);
+        $auth->save();
+
+        return response()->json(
+            [
+                'error' => 0,
+                'jwt' => Jwt::createToken($email),
+            ],
+            Response::HTTP_CREATED
+        );
+
+    }
+
 }
