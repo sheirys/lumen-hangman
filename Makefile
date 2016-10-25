@@ -7,6 +7,7 @@ composer:
 
 test:
 	cd lumen &&\
+	php artisan migrate:refresh --seed &&\
 	phpunit
 
 install: composer db-update
