@@ -1,4 +1,5 @@
 /vendor
 /.idea
+database/database.sqlite
 Homestead.json
 Homestead.yaml
