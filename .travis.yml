@@ -1,0 +1,10 @@
+language: php
+
+php:
+  - '5.4'
+  - '7.0'
+
+env:
+  - TEST_DIR=lumen
+
+script: cd $TEST_DIR && composer install && phpunit
