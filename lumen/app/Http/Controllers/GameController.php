@@ -49,9 +49,44 @@ class GameController extends Controller
     }
 
     public function putSessionNew(Request $request) {
-        
+
         $payload = Jwt::Verify($request->input("jwt"));
 
+        // random word generator
+        $random_word = file_get_contents("http://www.setgetgo.com/randomword/get.php");
+
+        // fallback if random generator does not love us
+        if(empty($random_word)) {
+            
+        }
+
+        $game = new Game;
+
+        $answer = str_split($random_word);
+
+        foreach($answer as $char)
+            $word[] = "*";
+
+        $game->account_id = $payload->id;
+        $game->word = json_encode($word);
+        $game->answer = json_encode($answer);
+        $game->guessed_letters = json_encode([]);
+        $game->player_won = 0;
+        $game->game_over = 0;
+
+        $game->save();
+
+        return response()->json(
+            [
+                'error' => 0,
+                'session' => $game->id,
+                'guessed_letters' => json_decode($game->guessed_letters),
+                'word' => json_decode($game->word),
+                'game_over' => (int)$game->game_over,
+                'player_won' => (int)$game->player_won,
+            ],
+            Response::HTTP_OK
+        );
 
     }
 
