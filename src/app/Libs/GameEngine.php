@@ -12,11 +12,11 @@ class GameEngine {
 
         if($filter !== NULL) {
 
-            $data = $filter->get();
-            $this->instance = $data;
+            $this->instance = $filter->get();
 
-            if($data->count() === 1) {
-                $this->instance = $data->first();
+            // overwrite instance with single record if possible
+            if($this->instance->count() === 1) {
+                $this->instance = $this->instance->first();
             }
 
         }
@@ -24,14 +24,6 @@ class GameEngine {
 
     // decodes multiple games from database to user readable JSON array
     public function decodeList() {
-
-        // when we pull out games from database
-        // records are with answers, so we need to
-        // recreate array without answers & timestamps
-        // also Laravel response()->json(..) has bug
-        // about INT conversions and tests are strict about it,
-        // so we need (int) inline conversion. Read more:
-        // https://github.com/laravel/framework/issues/11068
 
         $sessions = [];
 
@@ -67,9 +59,11 @@ class GameEngine {
 
     }
 
+    // creates new game session
     public function create($account_id) {
 
         $game = new Game;
+
         // random word generator
         $random_word = file_get_contents("http://www.setgetgo.com/randomword/get.php");
 
@@ -77,6 +71,7 @@ class GameEngine {
         if(empty($random_word)) {
 
         }
+
         $answer = str_split($random_word);
 
         foreach($answer as $char)
@@ -95,6 +90,7 @@ class GameEngine {
 
     }
 
+    // letter guessing logic
     public function guess($letter) {
 
         $game = $this->instance;
