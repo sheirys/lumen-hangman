@@ -18,4 +18,4 @@ $app->get('/game/sessions', 'GameController@getSessionList');
 $app->put('/game/sessions', 'GameController@putSessionNew');
 
 $app->get('/game/sessions/{game_id}', 'GameController@getSessionState');
-$app->post('/game/session/{game_id}', 'GameController@postSessionGuess');
+$app->post('/game/sessions/{game_id}', 'GameController@postSessionGuess');
