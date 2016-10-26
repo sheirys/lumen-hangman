@@ -65,11 +65,14 @@ class GameEngine {
         $game = new Game;
 
         // random word generator
-        $random_word = file_get_contents("http://www.setgetgo.com/randomword/get.php");
 
-        // fallback if random generator does not love us
-        if(empty($random_word)) {
+        @$random_word = file_get_contents("http://www.setgetgo.com/randomword/get.php");
 
+        if(!$random_word) {
+            // fallback if random generator does not love us
+            // TODO: read from file
+            $word_list = ["sheep", "carrot", "bunny", "pie"];
+            $random_word = $word_list[array_rand($word_list)];
         }
 
         $answer = str_split($random_word);
