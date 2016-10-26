@@ -6,8 +6,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GameTest extends TestCase
 {
-    public $good_jwt = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqaXQiOiI1ODBmNTRiM2E5NWQ5IiwidHlwIjoiYXV0aF90b2tlbiIsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Yk5u_Ceq78kOsX3YIAjJxHcs9lxzWcSnoaM1cxP_v9Y";
-    public $bad_jwt = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqaXQiOiI1ODBmNTRiM2E5NWQ5IiwidHlwIjoiYXV0aF90b2tlbiIsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Yk5u_Ceq78kOsX3YIAjJxHcs9lxzWcSnoaM1cxP_CCC";
 
     public function testGameSessionList()
     {
