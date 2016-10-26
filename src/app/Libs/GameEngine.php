@@ -27,6 +27,8 @@ class GameEngine {
 
         $sessions = [];
 
+        $games = $games->get();
+
         foreach($games as $game) {
             $sessions[] = $this->decodeSingle($game);
         }
