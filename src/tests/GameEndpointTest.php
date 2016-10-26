@@ -94,11 +94,13 @@ class GameTest extends TestCase
         ->seeStatusCode(Response::HTTP_OK)
         ->seeJson([
             'error' => 0,
-            'session' => 1,
-            'guessed_letters' => ['a', 'b', 'c'],
-            'word' => ['a','b','*','c','*','*','*'],
-            'game_over' => 0,
-            'player_won' => 0,
+            'session' => [
+                'session' => 1,
+                'guessed_letters' => ['a', 'b', 'c'],
+                'word' => ['a','b','*','c','*','*','*'],
+                'game_over' => 0,
+                'player_won' => 0,
+            ],
         ]);
     }
 
