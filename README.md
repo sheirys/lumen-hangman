@@ -1,5 +1,142 @@
-# The hangman game REST service
+# RESTful Hangman game service
 [![Build Status](https://travis-ci.org/sheirys/lumen-hangman.svg?branch=master)](https://travis-ci.org/sheirys/lumen-hangman)
 
-# API doc
-...
+## API documentation
+In every JSON response there will be an `error` variable:
+
++ `{error: 0}` - Request does not have any errors.
++ `{error: 1}` - Request contains some errors and can't be processed propertly.
+
+### Auth/
+#### [POST] auth/login
+>Login controller. Returns JWT token for other requests. Required data:
+>
+>- email - Users email.
+>- password - Users password.
+>
+>Returns JSON response:
+>
+>`{"error":0,"jwt":"eyJ0e....zS4q5M"}`
+>
+>Possible HTTP responses:
+>
+>- 200 _OK_ login was successful.
+>- 404 _NOT_FOUND_ user hasn't been found.
+
+#### [POST] auth/register
+> Creates new user and returns user's JWT token. Required data:
+>
+>- email - Users email.
+>- password - Users password.
+>
+> Possible HTTP responses:
+>
+>- 201 _CREATED_ Registration was successfuly.
+>- 400 _BAD_REQUEST_ - Request doesn't contain email or password variables.
+>- 302 _FOUND_ Email is already in use.
+
+### game/
+Every request must contain `jwt` token from `/auth`. In every JSON response there will be an `error` variable:
+
++ `{error: 0}` - Request does not have any errors.
++ `{error: 1}` - Request contains some errors and can't be processed propertly.
+
+Game `state` contains variables:
+
++ session - Session ID.
++ guessed_letters - Array of already guess'ed letters.
++ word - Array of letters of word. Known letters are shown and `*` for unknown letters.
++ game_over - Games state.
++ player_won - If `1` player solved the word.
+
+#### [PUT] game/sessions
+> Starts a new game and return its state.
+>
+> Required data:
+>
+> - jwt - Users JWT token.
+>
+> Returns JSON response:
+
+	{
+		"error":0,
+		"session":1,
+		"guessed_letters":[],
+		"word":["*","*","*","*","*","*","*"],
+		"game_over":0,
+		"player_won":0
+	}
+
+> Possible HTTP responses:
+>
+> - 200 _OK_ Everythin is ok.
+> - 401 _HTTP_UNAUTHORIZED_ Jwt token is invalid or not set.
+
+#### [POST] game/sessions/{session_id}
+> Guess'es letter
+>
+> Required data:
+>
+> - jwt - Users JWT token.
+> - letter - Guessing letter.
+>
+> Returns JSON response:
+
+	{
+		"error":0,
+		"session":1,
+		"guessed_letters":["e"],
+		"word":["*","*","e","*","e","*","e"],
+		"game_over":0,
+		"player_won":0
+	}
+
+> Possible HTTP responses:
+>
+> - 200 _OK_ Everythin is ok.
+> - 401 _HTTP_UNAUTHORIZED_ Jwt token is invalid or not set.
+> - 404 _NOT_FOUND_ Game can't be founded or belongs to other user.
+> - 423 _LOCKED_ Game can't receive any guess'es anymore.
+
+#### [GET] game/sessions/{session_id}
+> Returns game state.
+>
+> Required data:
+>
+> - jwt - Users JWT token.
+>
+> Returns JSON response:
+
+	{
+		"error":0,
+		"session":1,
+		"guessed_letters":["a","b","c","l"],
+		"word":["a","b","*","c","*","l","*"],
+		"game_over":0,
+		"player_won":0
+	}
+
+> Possible HTTP responses:
+>
+> - 200 _OK_ Everythin is ok.
+> - 401 _HTTP_UNAUTHORIZED_ Jwt token is invalid or not set.
+> - 404 _NOT_FOUND_ Game can't be founded or belongs to other user.
+
+#### [GET] game/sessions
+> Returns list of games.
+>
+> Required data:
+>
+> - jwt - Users JWT token.
+>
+> Returns JSON response:
+
+    {
+    	"error": 0,
+    	"sessions": [<list of games states>]
+    }
+
+> Possible HTTP responses:
+>
+> - 200 _OK_ Everythin is ok.
+> - 401 _HTTP_UNAUTHORIZED_ Jwt token is invalid or not set.
