@@ -20,12 +20,12 @@ class GameController extends Controller
 
         $filter = Game::Where('account_id', '=', $payload->id);
 
-        $game = new GameEngine($filter);
+        $game = new GameEngine();
 
         return response()->json(
             [
                 'error' => 0,
-                'sessions' => $game->decodeList(),
+                'sessions' => $game->decodeList($filter),
             ],
             Response::HTTP_OK
         );

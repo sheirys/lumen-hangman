@@ -49,7 +49,7 @@ class GameTest extends TestCase
                 [
                     'session' => 4,
                     'guessed_letters' => ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
-                    'word' => ['*','*','*'],
+                    'word' => ['z','z','z'],
                     'game_over' => 1,
                     'player_won' => 0,
                 ],
@@ -136,7 +136,7 @@ class GameTest extends TestCase
             'error' => 0,
             'session' => 4,
             'guessed_letters' => ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
-            'word' => ['*','*','*'],
+            'word' => ['z','z','z'],
             'game_over' => 1,
             'player_won' => 0,
         ]);

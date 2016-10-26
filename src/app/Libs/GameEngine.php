@@ -23,11 +23,11 @@ class GameEngine {
     }
 
     // decodes multiple games from database to user readable JSON array
-    public function decodeList() {
+    public function decodeList($games) {
 
         $sessions = [];
 
-        foreach($this->instance as $game) {
+        foreach($games as $game) {
             $sessions[] = $this->decodeSingle($game);
         }
 
@@ -49,10 +49,16 @@ class GameEngine {
         // so we need (int) inline conversion. Read more:
         // https://github.com/laravel/framework/issues/11068
 
+        if($game->game_over) {
+            $word = $game->answer;
+        } else {
+            $word = $game->word;
+        }
+
         return [
             'session' => $game->id,
             'guessed_letters' => json_decode($game->guessed_letters),
-            'word' => json_decode($game->word),
+            'word' => json_decode($word),
             'game_over' => (int)$game->game_over,
             'player_won' => (int)$game->player_won,
         ];
@@ -116,7 +122,7 @@ class GameEngine {
         if(count($guessed_letters) >= 8)
             $game->game_over = 1;
 
-        if(!array_search('*', $word)) {
+        if(array_search('*', $word) === FALSE) {
             $game->player_won = 1;
             $game->game_over = 1;
         }
