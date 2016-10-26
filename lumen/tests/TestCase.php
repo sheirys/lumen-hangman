@@ -11,4 +11,11 @@ class TestCase extends Laravel\Lumen\Testing\TestCase
     {
         return require __DIR__.'/../bootstrap/app.php';
     }
+
+    // just for solving warning about:
+    // No tests found in class "TestCase".
+    public function testNothing()
+    {
+        $this->assertTrue(true);
+    }
 }
