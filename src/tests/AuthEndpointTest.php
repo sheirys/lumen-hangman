@@ -120,7 +120,7 @@ class AuthTest extends TestCase
         ];
 
         $this->json('POST', '/auth/register', $credentials)
-        ->seeStatusCode(Response::HTTP_RESERVED)
+        ->seeStatusCode(Response::HTTP_FOUND)
         ->seeJson([
             'error' => 1,
         ]);

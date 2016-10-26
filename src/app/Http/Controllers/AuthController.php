@@ -68,7 +68,7 @@ class AuthController extends Controller
                 [
                     'error' => 1
                 ],
-                Response::HTTP_RESERVED
+                Response::HTTP_FOUND
             );
 
         }
