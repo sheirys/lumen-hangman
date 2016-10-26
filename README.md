@@ -1,6 +1,17 @@
 # RESTful Hangman game service
 [![Build Status](https://travis-ci.org/sheirys/lumen-hangman.svg?branch=master)](https://travis-ci.org/sheirys/lumen-hangman)
 
+RESTful Hangman's game service written on Lumen microframework.
+
+## Installation
+
+	git clone https://github.com/sheirys/lumen-hangman.git
+	cd lumen-hangman
+	make install
+
+For testing can be run on built-in PHP server. `make serve` Will start server on `localhost:8000`. Edit `Makefile` for more options or improvise. For testing use `make test` or `cd lumen-hangman/ && phpunit`.
+
+
 ## API documentation
 In every JSON response there will be an `error` variable:
 
