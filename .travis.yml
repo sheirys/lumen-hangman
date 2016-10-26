@@ -5,6 +5,6 @@ php:
   - '7.0'
 
 env:
-  - TEST_DIR=lumen
+  - TEST_DIR=src
 
 script: cd $TEST_DIR && composer install && php artisan migrate:refresh --seed && phpunit
