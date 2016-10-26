@@ -3,6 +3,12 @@
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Symfony\Component\HttpFoundation\Response;
 
+use App\Libs\Jwt;
+
+define('T_GOOD_EMAIL', "test@test.com");
+define('T_BAD_EMAIL', "test2@test.com");
+define('T_GOOD_PASS', "test");
+
 
 class GameTest extends TestCase
 {
@@ -11,13 +17,13 @@ class GameTest extends TestCase
     {
 
         $data = [
-            'jwt' => $this->good_jwt,
+            'jwt' => Jwt::createToken(T_GOOD_EMAIL),
         ];
 
         $this->json('GET', '/game/sessions', $data)
         ->seeStatusCode(Response::HTTP_OK)
         ->seeJson([
-            'error' => false,
+            'error' => 0,
             'sessions' => [
                 [
                     'session' => 1,
@@ -55,27 +61,27 @@ class GameTest extends TestCase
     {
 
         $data = [
-            'jwt' => $this->bad_jwt,
+            'jwt' => Jwt::createToken(T_BAD_EMAIL),
         ];
 
         $this->json('GET', '/game/sessions', $data)
-        ->seeStatusCode(Response::HTTP_NOT_FOUND)
+        ->seeStatusCode(Response::HTTP_OK)
         ->seeJson([
-            'error' => true,
+            'error' => 0,
             'sessions' => [],
         ]);
     }
 
-    public function testGameSessionStatus()
+    public function testGameSessionState()
     {
         $data = [
-            'jwt' => $this->good_jwt,
+            'jwt' => Jwt::createToken(T_GOOD_EMAIL),
         ];
 
         $this->json('GET', '/game/sessions/1', $data)
         ->seeStatusCode(Response::HTTP_OK)
         ->seeJson([
-            'error' => false,
+            'error' => 0,
             'session' => 1,
             'guessed_letters' => ['a', 'b', 'c'],
             'word' => ['a','b','*','c','*','*','*'],
@@ -87,14 +93,14 @@ class GameTest extends TestCase
     public function testGameSessionGuess()
     {
         $data = [
-            'jwt' => $this->good_jwt,
+            'jwt' => Jwt::createToken(T_GOOD_EMAIL),
             'letter' => 'l',
         ];
 
         $this->json('POST', '/game/sessions/1', $data)
         ->seeStatusCode(Response::HTTP_OK)
         ->seeJson([
-            'error' => false,
+            'error' => 0,
             'session' => 1,
             'guessed_letters' => ['a', 'b', 'c', 'l'],
             'word' => ['a','b','*','c','*','l','*'],
@@ -113,7 +119,7 @@ class GameTest extends TestCase
         $this->json('POST', '/game/sessions/4', $data)
         ->seeStatusCode(Response::HTTP_LOCKED)
         ->seeJson([
-            'error' => false,
+            'error' => 0,
             'session' => 4,
             'guessed_letters' => ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
             'word' => ['*','*','*'],
@@ -125,7 +131,7 @@ class GameTest extends TestCase
 
     public function testGameSessionNew() {
 
-        $this->json('PUT', '/game/sessions', ['jwt' => $this->good_jwt])
+        $this->json('PUT', '/game/sessions', ['jwt' => Jwt::createToken(T_GOOD_EMAIL)])
         ->seeStatusCode(Response::HTTP_OK);
 
         $this->seeInDatabase('game', [

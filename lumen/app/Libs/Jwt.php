@@ -1,12 +1,20 @@
 <?php
 namespace App\Libs;
 
+use App\Auth;
+
 define('JWT_SECRET', 'secret');
 
 class Jwt {
 
     // returns JWT token
     public static function createToken($email) {
+
+        $auth = Auth::Where('email', '=', $email)
+            ->first();
+
+        if(empty($auth))
+            return false;
 
         $header = array(
             "typ" => "JWT",
@@ -17,6 +25,7 @@ class Jwt {
             //"jit" => uniqid(),
             //"typ" => "auth_token",
             "email" => $email,
+            "id" => $auth->id,
         );
 
         $j_header = json_encode($header, JSON_UNESCAPED_UNICODE);
@@ -34,10 +43,11 @@ class Jwt {
 
     // verifies is JWT is valid. Returns FALSE if invalid, else
     // returns JWT payload as array
-    public static function verify($token) {
+    public static function Verify($token) {
 
         $chunks = explode(".", $token);
 
+        // jwt should be made made of 3 parts
         if(count($chunks) !== 3) {
             return false;
         }

@@ -20,6 +20,7 @@ class AuthController extends Controller
             ->where('password', '=', md5($pass))
             ->first();
 
+        // if user has been found
         if(!empty($auth)) {
 
             return response()->json(
@@ -32,6 +33,7 @@ class AuthController extends Controller
 
         }
 
+        // if user wasnt been found
         return response()->json(
             [
                 'error' => 1
@@ -46,6 +48,7 @@ class AuthController extends Controller
         $email = $request->input("email");
         $pass = $request->input("pass");
 
+        // email and password cant be null
         if(empty($email) || empty($pass)) {
             return response()->json(
                 [
@@ -58,6 +61,7 @@ class AuthController extends Controller
         $auth = Auth::where('email', '=', $email)
             ->first();
 
+        // checking maybe user already exist
         if(!empty($auth)) {
 
             return response()->json(
@@ -69,6 +73,7 @@ class AuthController extends Controller
 
         }
 
+        // creating new user
         $auth = new Auth;
         $auth->email = $email;
         $auth->password = md5($pass);
