@@ -28,7 +28,7 @@ Let's see if we have any game sessions:
 
 We didn't play any games yet. So lets start a new game session:
 
-    curl -X PUT http://localhost:8000/game/sessions?jwt=$JWT
+    $ curl -X PUT http://localhost:8000/game/sessions?jwt=$JWT
     {
         "error":0,
         "session":{
@@ -42,7 +42,7 @@ We didn't play any games yet. So lets start a new game session:
 
 Game engine generated new word for us from 7 letters. Let's guess if there is letter `o`
 
-    curl -X POST "http://localhost:8000/game/sessions/6?jwt=$JWT&letter=o"
+    $ curl -X POST "http://localhost:8000/game/sessions/6?jwt=$JWT&letter=o"
     {
         "error":0,
         "session":{
@@ -56,7 +56,7 @@ Game engine generated new word for us from 7 letters. Let's guess if there is le
 
 Success! There is letter `o` in this word. Lets try `s,a,m,x,p,c,i` letters also.With last guess we lose. That was hard one:
 
-    curl -X POST "http://localhost:8000/game/sessions/6?jwt=$JWT&letter=i"
+    $ curl -X POST "http://localhost:8000/game/sessions/6?jwt=$JWT&letter=i"
     {
         "error":0,
         "session":{
@@ -68,6 +68,7 @@ Success! There is letter `o` in this word. Lets try `s,a,m,x,p,c,i` letters also
         }
     }
 
+Now we can create another one session with `curl -X PUT http://localhost:8000/game/sessions?jwt=$JWT` or resume not finished game from `$ curl -X GET http://localhost:8000/game/sessions?jwt=$JWT` list.
 
 ## API documentation
 In every JSON response there will be an `error` variable:
