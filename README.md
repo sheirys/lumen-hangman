@@ -11,6 +11,63 @@ RESTful Hangman's game service written on Lumen microframework.
 
 For testing can be run on built-in PHP server. `make serve` Will start server on `localhost:8000`. Edit `Makefile` for more options or improvise. For testing use `make test` or `cd lumen-hangman/ && phpunit`.
 
+## An example with curl:
+First create a new account:
+
+    $ curl --data "email=kaka@makaka.test&pass=makaka" http://localhost:8000/auth/register
+    {"error":0,"jwt":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtha2FAbWFrYWthLnRlc3QiLCJpZCI6NX0.C-wF4fym5Rm6vReyAxkogTrQWItvgFbswn63NH6sENU"}
+
+Our registration point already returns `jwt` for us. Now lets save our jwt within bash session:
+
+    $ JWT="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtha2FAbWFrYWthLnRlc3QiLCJpZCI6NX0.C-wF4fym5Rm6vReyAxkogTrQWItvgFbswn63NH6sENU"
+
+Let's see if we have any game sessions:
+
+    $ curl -X GET http://localhost:8000/game/sessions?jwt=$JWT
+    {"error":0,"sessions":[]}
+
+We didn't play any games yet. So lets start a new game session:
+
+    curl -X PUT http://localhost:8000/game/sessions?jwt=$JWT
+    {
+        "error":0,
+        "session":{
+            "session":6,
+            "guessed_letters":[],
+            "word":["*","*","*","*","*","*","*"],
+            "game_over":0,
+            "player_won":0
+        }
+    }
+
+Game engine generated new word for us from 7 letters. Let's guess if there is letter `o`
+
+    curl -X POST "http://localhost:8000/game/sessions/6?jwt=$JWT&letter=o"
+    {
+        "error":0,
+        "session":{
+            "session":6,
+            "guessed_letters":["o"],
+            "word":["*","*","*","o","*","*","*"],
+            "game_over":1,
+            "player_won":1
+        }
+    }
+
+Success! There is letter `o` in this word. Lets try `s,a,m,x,p,c,i` letters also.With last guess we lose. That was hard one:
+
+    curl -X POST "http://localhost:8000/game/sessions/6?jwt=$JWT&letter=i"
+    {
+        "error":0,
+        "session":{
+            "session":6,
+            "guessed_letters":["o","s","a","m","x","p","c","i"],
+            "word":["S","i","n","o","p","i","c"],
+            "game_over":1,
+            "player_won":0
+        }
+    }
+
 
 ## API documentation
 In every JSON response there will be an `error` variable:
