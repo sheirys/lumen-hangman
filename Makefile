@@ -1,19 +1,19 @@
 db-update:
-	cd lumen &&\
+	cd src &&\
 	php artisan migrate:refresh --seed
 
 composer:
-	cd lumen && composer install
+	cd src && composer install
 
 test:
-	cd lumen &&\
+	cd src &&\
 	php artisan migrate:refresh --seed &&\
 	phpunit
 
 install: composer db-update
 
 serve:
-	cd lumen/public &&\
+	cd src/public &&\
 	php -S localhost:8000
 
-all: install db-update test serve
+all: install db-update test
