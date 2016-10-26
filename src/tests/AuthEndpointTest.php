@@ -33,7 +33,7 @@ class AuthTest extends TestCase
         $this->json('POST', '/auth/login', $credentials)
         ->seeStatusCode(Response::HTTP_NOT_FOUND)
         ->seeJson([
-            'error' => 1,
+            'error' => 0,
         ]);
     }
 
@@ -47,7 +47,7 @@ class AuthTest extends TestCase
         $this->json('POST', '/auth/login', $credentials)
         ->seeStatusCode(Response::HTTP_NOT_FOUND)
         ->seeJson([
-            'error' => 1,
+            'error' => 0,
         ]);
     }
 
@@ -61,7 +61,7 @@ class AuthTest extends TestCase
         $this->json('POST', '/auth/login', $credentials)
         ->seeStatusCode(Response::HTTP_NOT_FOUND)
         ->seeJson([
-            'error' => 1,
+            'error' => 0,
         ]);
     }
 

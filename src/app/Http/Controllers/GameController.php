@@ -57,7 +57,7 @@ class GameController extends Controller
 
         // fallback if random generator does not love us
         if(empty($random_word)) {
-            
+
         }
 
         $game = new Game;

@@ -36,7 +36,7 @@ class AuthController extends Controller
         // if user wasnt been found
         return response()->json(
             [
-                'error' => 1
+                'error' => 0
             ],
             Response::HTTP_NOT_FOUND
         );

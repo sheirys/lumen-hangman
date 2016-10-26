@@ -14,8 +14,14 @@
 $app->post('/auth/login', 'AuthController@postLogin');
 $app->post('/auth/register', 'AuthController@postRegister');
 
-$app->get('/game/sessions', 'GameController@getSessionList');
-$app->put('/game/sessions', 'GameController@putSessionNew');
+$app->group([
+    'middleware' => 'JwtMiddleware',
+    'namespace' => 'App\Http\Controllers'
+], function() use($app) {
 
-$app->get('/game/sessions/{game_id}', 'GameController@getSessionState');
-$app->post('/game/sessions/{game_id}', 'GameController@postSessionGuess');
+    $app->get('/game/sessions', 'GameController@getSessionList');
+    $app->put('/game/sessions', 'GameController@putSessionNew');
+    $app->get('/game/sessions/{game_id}', 'GameController@getSessionState');
+    $app->post('/game/sessions/{game_id}', 'GameController@postSessionGuess');
+
+});

@@ -59,12 +59,12 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-//    App\Http\Middleware\ExampleMiddleware::class
-// ]);
+//$app->middleware([
+//    App\Http\Middleware\JwtMiddleware::class
+//]);
 
 $app->routeMiddleware([
-    'game' => App\Http\Middleware\JwtMiddleware::class,
+    'JwtMiddleware' => App\Http\Middleware\JwtMiddleware::class,
 ]);
 
 /*

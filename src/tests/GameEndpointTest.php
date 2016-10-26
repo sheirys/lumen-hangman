@@ -57,6 +57,7 @@ class GameTest extends TestCase
         ]);
     }
 
+    // should return empty sessions list
     public function testGameSessionList_Bad()
     {
 
@@ -70,6 +71,17 @@ class GameTest extends TestCase
             'error' => 0,
             'sessions' => [],
         ]);
+    }
+
+    // how auth will behave if we post bad JWT?
+    public function testGameSessionCheckJWT()
+    {
+        $data = [
+            'jwt' => 'this.jwt.is.wrong.in.so.many.ways'
+        ];
+
+        $this->json('GET', '/game/sessions', $data)
+        ->seeStatusCode(Response::HTTP_UNAUTHORIZED);
     }
 
     public function testGameSessionState()
